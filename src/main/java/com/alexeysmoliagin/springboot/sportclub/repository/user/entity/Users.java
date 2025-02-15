@@ -1,6 +1,8 @@
-package com.alexeysmoliagin.springboot.sportclub.entity;
+package com.alexeysmoliagin.springboot.sportclub.repository.user.entity;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -29,7 +31,7 @@ public class Users {
     private String telegramLogin;
 
     @Column (name = "register_date")
-    private String registerDate;
+    private LocalDateTime registerDate;
 
     public Users() {
     }
@@ -37,7 +39,7 @@ public class Users {
     public Users(String name, String surname
             , int age, String gender
             , String phone, String telegramLogin
-            , String registerDate) {
+            , LocalDateTime registerDate) {
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -103,11 +105,11 @@ public class Users {
         this.telegramLogin = telegramLogin;
     }
 
-    public String getRegisterDate() {
+    public LocalDateTime getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(String registerDate) {
+    public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;
     }
 
