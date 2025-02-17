@@ -1,10 +1,10 @@
 package com.alexeysmoliagin.springboot.sportclub.service.impl;
 
-import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsersDtoImpl implements UsersService {
+public class UsersServiceImpl implements UsersService {
 
-    UsersRepository usersRepository;
+    @Autowired
+    private UsersRepository usersRepository;
+
     @Override
     public List<UsersDto> getAllUsers() {
         List <Users> allUsers = usersRepository.findAll();
@@ -32,6 +34,7 @@ public class UsersDtoImpl implements UsersService {
             dto.setPhone(user.getPhone());
             dto.setTelegramLogin(user.getTelegramLogin());
             dto.setAge(user.getAge());
+            dto.setRegisterData(user.getRegisterData());
             result.add(dto);
         }
         return result;
@@ -51,6 +54,7 @@ public class UsersDtoImpl implements UsersService {
             dto.setPhone(user.getPhone());
             dto.setTelegramLogin(user.getTelegramLogin());
             dto.setAge(user.getAge());
+            dto.setRegisterData(user.getRegisterData());
             return dto;
         }
         throw new RuntimeException("Пользователь с таким ID не найден");
@@ -73,16 +77,18 @@ public class UsersDtoImpl implements UsersService {
 
     @Override
     public void updateUsers(UsersDto dto, int id) {
-        Users user = new Users();
-        user.setName(dto.getName());
-        user.setSurname(dto.getSurname());
-        user.setAge(dto.getAge());
-        user.setGender(dto.getGender());
-        user.setTelegramLogin(dto.getTelegramLogin());
-        user.setId(dto.getId());
-        user.setPhone(dto.getPhone());
-        user.setRegisterData(dto.getRegisterData());
-        usersRepository.save(user);
+        if (usersRepository.existsById(id)) {
+            Users user = new Users();
+            user.setName(dto.getName());
+            user.setSurname(dto.getSurname());
+            user.setAge(dto.getAge());
+            user.setGender(dto.getGender());
+            user.setTelegramLogin(dto.getTelegramLogin());
+            user.setId(dto.getId());
+            user.setPhone(dto.getPhone());
+            usersRepository.save(user);
+        }
+        throw new RuntimeException("Пользователь с таким ID не найден");
     }
 
     @Override

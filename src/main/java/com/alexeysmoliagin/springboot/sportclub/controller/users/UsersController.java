@@ -5,14 +5,18 @@ import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResp
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpdateRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 public class UsersController {
 
-    UsersService usersService;
+    @Autowired
+    private UsersService usersService;
 
     @GetMapping("/users")
     public List<UsersResponseModel> showAllUsers () {
@@ -60,7 +64,6 @@ public class UsersController {
         dto.setTelegramLogin(model.getTelegramLogin());
         dto.setId(model.getId());
         dto.setPhone(model.getPhone());
-        dto.setRegisterData(model.getRegisterData());
         usersService.addUsers(dto);
     }
 
@@ -79,7 +82,6 @@ public class UsersController {
         dto.setTelegramLogin(model.getTelegramLogin());
         dto.setId(model.getId());
         dto.setPhone(model.getPhone());
-        dto.setRegisterData(model.getRegisterData());
         usersService.updateUsers(dto, id);
     }
 }
