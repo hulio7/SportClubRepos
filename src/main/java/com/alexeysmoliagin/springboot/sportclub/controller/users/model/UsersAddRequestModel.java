@@ -1,26 +1,31 @@
-package com.alexeysmoliagin.springboot.sportclub.controller.user.model;
+package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
-public class UsersResponseModel {
+import java.time.LocalDateTime;
+
+public class UsersAddRequestModel {
     private int id;
     private String name;
     private String surname;
-    private int age;
     private String gender;
+    private int age;
     private String phone;
     private String telegramLogin;
+    private LocalDateTime registerData;
 
-
-    public UsersResponseModel() {
+    public UsersAddRequestModel() {
     }
 
-    public UsersResponseModel(int id, String name, String surname, int age, String gender, String phone, String telegramLogin, String registerDate) {
+    public UsersAddRequestModel(int id, String name, String surname
+            , String gender, int age, String phone, String telegramLogin
+            , LocalDateTime registerData) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.age = age;
         this.gender = gender;
+        this.age = age;
         this.phone = phone;
         this.telegramLogin = telegramLogin;
+        this.registerData = registerData;
     }
 
     public int getId() {
@@ -47,20 +52,20 @@ public class UsersResponseModel {
         this.surname = surname;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public String getGender() {
         return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getPhone() {
@@ -77,5 +82,13 @@ public class UsersResponseModel {
 
     public void setTelegramLogin(String telegramLogin) {
         this.telegramLogin = telegramLogin;
+    }
+
+    public LocalDateTime getRegisterData() {
+        return registerData;
+    }
+
+    public void setRegisterData(LocalDateTime registerData) {
+        this.registerData = registerData;
     }
 }
