@@ -41,7 +41,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UsersDto getUsers(int id) {
+    public UsersDto getUser(int id) {
         Users user = null;
         Optional<Users> optional = usersRepository.findById(id);
         if(optional.isPresent()) {
@@ -61,22 +61,31 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public void addUsers(UsersDto dto) {
+    public UsersDto addUser(UsersDto dto) {
         Users user = new Users();
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
         user.setAge(dto.getAge());
         user.setGender(dto.getGender());
         user.setTelegramLogin(dto.getTelegramLogin());
-        user.setId(dto.getId());
         user.setPhone(dto.getPhone());
         user.setRegisterData(dto.getRegisterData());
         usersRepository.save(user);
-
+//        UsersDto usersDtoResponse = new UsersDto();
+//        usersDtoResponse.setId(user.getId());
+//        usersDtoResponse.setName(user.getName());
+//        usersDtoResponse.setSurname(user.getSurname());
+//        usersDtoResponse.setGender(user.getGender());
+//        usersDtoResponse.setPhone(user.getPhone());
+//        usersDtoResponse.setTelegramLogin(user.getTelegramLogin());
+//        usersDtoResponse.setAge(user.getAge());
+//        usersDtoResponse.setRegisterData(user.getRegisterData());
+        UsersDto usersDtoResponseAfterSave = getUser(user.getId());
+        return usersDtoResponseAfterSave;
     }
 
     @Override
-    public void updateUsers(UsersDto dto, int id) {
+    public UsersDto updateUser(UsersDto dto, int id) {
         if (usersRepository.existsById(id)) {
             Users user = new Users();
             user.setName(dto.getName());
@@ -84,16 +93,34 @@ public class UsersServiceImpl implements UsersService {
             user.setAge(dto.getAge());
             user.setGender(dto.getGender());
             user.setTelegramLogin(dto.getTelegramLogin());
-            user.setId(dto.getId());
             user.setPhone(dto.getPhone());
             usersRepository.save(user);
+            UsersDto usersDtoResponseAfterSave = getUser(user.getId());
+            return usersDtoResponseAfterSave;
         }
         throw new RuntimeException("Пользователь с таким ID не найден");
     }
 
     @Override
-    public void deleteUsers(int id) {
-        usersRepository.deleteById(id);
-
+    public String deleteUser(int id) {
+        if (usersRepository.existsById(id)) {
+            usersRepository.deleteById(id);
+            return "Пользователь с ID = " + id + " удален";
+        }
+        throw new RuntimeException("Пользователь с таким ID не найден");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

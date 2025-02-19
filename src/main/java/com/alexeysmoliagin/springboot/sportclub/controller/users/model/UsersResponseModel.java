@@ -10,6 +10,7 @@ public class UsersResponseModel {
     private int age;
     private String phone;
     private String telegramLogin;
+    private LocalDateTime registerData;
 
     public UsersResponseModel() {
     }
@@ -24,6 +25,7 @@ public class UsersResponseModel {
         this.age = age;
         this.phone = phone;
         this.telegramLogin = telegramLogin;
+        this.registerData = registerData;
     }
 
     public int getId() {
@@ -80,5 +82,13 @@ public class UsersResponseModel {
 
     public void setTelegramLogin(String telegramLogin) {
         this.telegramLogin = telegramLogin;
+    }
+
+    public LocalDateTime getRegisterData() {
+        return registerData;
+    }
+
+    public void setRegisterData(LocalDateTime registerData) {
+        this.registerData = registerData;
     }
 }

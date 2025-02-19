@@ -1,37 +1,33 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 public class UsersAddRequestModel {
-    private int id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String surname;
     private String gender;
     private int age;
+    @NotBlank
     private String phone;
+    @NotBlank
     private String telegramLogin;
 
     public UsersAddRequestModel() {
     }
 
-    public UsersAddRequestModel(int id, String name, String surname
+    public UsersAddRequestModel(String name, String surname
             , String gender, int age, String phone, String telegramLogin
             , LocalDateTime registerData) {
-        this.id = id;
         this.name = name;
         this.surname = surname;
         this.gender = gender;
         this.age = age;
         this.phone = phone;
         this.telegramLogin = telegramLogin;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

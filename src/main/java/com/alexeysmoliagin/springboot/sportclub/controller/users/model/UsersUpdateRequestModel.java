@@ -3,7 +3,6 @@ package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 import java.time.LocalDateTime;
 
 public class UsersUpdateRequestModel {
-    private int id;
     private String name;
     private String surname;
     private String gender;
@@ -14,24 +13,15 @@ public class UsersUpdateRequestModel {
     public UsersUpdateRequestModel() {
     }
 
-    public UsersUpdateRequestModel(int id, String name, String surname
+    public UsersUpdateRequestModel(String name, String surname
             , String gender, int age, String phone, String telegramLogin
             , LocalDateTime registerData) {
-        this.id = id;
         this.name = name;
         this.surname = surname;
         this.gender = gender;
         this.age = age;
         this.phone = phone;
         this.telegramLogin = telegramLogin;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
