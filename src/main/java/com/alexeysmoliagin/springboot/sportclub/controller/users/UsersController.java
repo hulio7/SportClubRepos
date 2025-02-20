@@ -3,6 +3,7 @@ package com.alexeysmoliagin.springboot.sportclub.controller.users;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersAddRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpdateRequestModel;
+import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 public class UsersController {
 
     @Autowired
@@ -66,8 +67,11 @@ public class UsersController {
         dto.setGender(model.getGender());
         dto.setTelegramLogin(model.getTelegramLogin());
         dto.setPhone(model.getPhone());
-        usersService.addUser(dto);
-        UsersResponseModel usersResponseModelAfterSave = getUser(dto.getId());
+        dto = usersService.addUser(dto);
+        List <UsersDto> listFromOneUserDto = new ArrayList<>();
+        listFromOneUserDto.add(dto);
+        List<UsersResponseModel> result = mappingDaoToResponseModel(listFromOneUserDto);
+        UsersResponseModel usersResponseModelAfterSave = result.get(0);
         return usersResponseModelAfterSave;
     }
 
@@ -85,26 +89,30 @@ public class UsersController {
         dto.setGender(model.getGender());
         dto.setTelegramLogin(model.getTelegramLogin());
         dto.setPhone(model.getPhone());
-        usersService.updateUser(dto, id);
-        UsersResponseModel usersResponseModelAfterSave = getUser(dto.getId());
+        dto = usersService.updateUser(dto, id);
+        List <UsersDto> listFromOneUserDto = new ArrayList<>();
+        listFromOneUserDto.add(dto);
+        List<UsersResponseModel> result = mappingDaoToResponseModel(listFromOneUserDto);
+        UsersResponseModel usersResponseModelAfterSave = result.get(0);
         return usersResponseModelAfterSave;
     }
 
     @PostMapping("/users/addArrayUsers")
-    public UsersResponseModel addArrayUsers(@RequestBody UsersAddRequestModel[] arrayModels) {
-        UsersResponseModel usersResponseModelAfterSave = null;
-        for (int i = 0; i < arrayModels.length; i++) {
+    public List <UsersResponseModel> addListUsers(@RequestBody List <UsersAddRequestModel> listModelsRequest) {
+        List<UsersResponseModel> listModelsResponse = new ArrayList<>();
+        List<UsersDto> listUserDtoForMapping = new ArrayList<>();
+        for (int i = 0; i < listModelsRequest.size(); i++) {
             UsersDto dto = new UsersDto();
-            dto.setName(arrayModels[i].getName());
-            dto.setSurname(arrayModels[i].getSurname());
-            dto.setAge(arrayModels[i].getAge());
-            dto.setGender(arrayModels[i].getGender());
-            dto.setTelegramLogin(arrayModels[i].getTelegramLogin());
-            dto.setPhone(arrayModels[i].getPhone());
-            usersService.addUser(dto);
-            usersResponseModelAfterSave = getUser(dto.getId());
+            dto.setName(listModelsRequest.get(i).getName());
+            dto.setSurname(listModelsRequest.get(i).getSurname());
+            dto.setAge(listModelsRequest.get(i).getAge());
+            dto.setGender(listModelsRequest.get(i).getGender());
+            dto.setTelegramLogin(listModelsRequest.get(i).getTelegramLogin());
+            dto.setPhone(listModelsRequest.get(i).getPhone());
+            dto = usersService.addUser(dto);
+            listUserDtoForMapping.add(dto);
         }
-        return usersResponseModelAfterSave;
+        return listModelsResponse = mappingDaoToResponseModel(listUserDtoForMapping);
     }
 }
 

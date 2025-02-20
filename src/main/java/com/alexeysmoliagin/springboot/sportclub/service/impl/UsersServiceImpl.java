@@ -70,17 +70,11 @@ public class UsersServiceImpl implements UsersService {
         user.setTelegramLogin(dto.getTelegramLogin());
         user.setPhone(dto.getPhone());
         user.setRegisterData(dto.getRegisterData());
-        usersRepository.save(user);
-//        UsersDto usersDtoResponse = new UsersDto();
-//        usersDtoResponse.setId(user.getId());
-//        usersDtoResponse.setName(user.getName());
-//        usersDtoResponse.setSurname(user.getSurname());
-//        usersDtoResponse.setGender(user.getGender());
-//        usersDtoResponse.setPhone(user.getPhone());
-//        usersDtoResponse.setTelegramLogin(user.getTelegramLogin());
-//        usersDtoResponse.setAge(user.getAge());
-//        usersDtoResponse.setRegisterData(user.getRegisterData());
-        UsersDto usersDtoResponseAfterSave = getUser(user.getId());
+        user = usersRepository.save(user);
+        List <Users> listFromOneUser = new ArrayList<>();
+        listFromOneUser.add(user);
+        List<UsersDto> result = mappingUsersToDto(listFromOneUser);
+        UsersDto usersDtoResponseAfterSave = result.get(0);
         return usersDtoResponseAfterSave;
     }
 
@@ -94,8 +88,11 @@ public class UsersServiceImpl implements UsersService {
             user.setGender(dto.getGender());
             user.setTelegramLogin(dto.getTelegramLogin());
             user.setPhone(dto.getPhone());
-            usersRepository.save(user);
-            UsersDto usersDtoResponseAfterSave = getUser(user.getId());
+            user = usersRepository.save(user);
+            List <Users> listFromOneUser = new ArrayList<>();
+            listFromOneUser.add(user);
+            List<UsersDto> result = mappingUsersToDto(listFromOneUser);
+            UsersDto usersDtoResponseAfterSave = result.get(0);
             return usersDtoResponseAfterSave;
         }
         throw new RuntimeException("Пользователь с таким ID не найден");
