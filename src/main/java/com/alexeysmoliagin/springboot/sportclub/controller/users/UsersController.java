@@ -3,10 +3,15 @@ package com.alexeysmoliagin.springboot.sportclub.controller.users;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersAddRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpdateRequestModel;
+import com.alexeysmoliagin.springboot.sportclub.exception_hundling.NoSuchUserException;
+import com.alexeysmoliagin.springboot.sportclub.exception_hundling.UsersIncorrectData;
 import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +43,7 @@ public class UsersController {
             model.setPhone(user.getPhone());
             model.setTelegramLogin(user.getTelegramLogin());
             model.setAge(user.getAge());
+            model.setRegisterData(user.getRegisterData());
             result.add(model);
         }
         return result;
@@ -115,6 +121,13 @@ public class UsersController {
         return listModelsResponse = mappingDaoToResponseModel(listUserDtoForMapping);
     }
 }
+
+
+
+
+
+
+
 
 
 

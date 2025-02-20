@@ -1,12 +1,19 @@
 package com.alexeysmoliagin.springboot.sportclub.service.impl;
 
+import com.alexeysmoliagin.springboot.sportclub.exception_hundling.NoSuchUserException;
+import com.alexeysmoliagin.springboot.sportclub.exception_hundling.UsersIncorrectData;
 import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +64,7 @@ public class UsersServiceImpl implements UsersService {
             dto.setRegisterData(user.getRegisterData());
             return dto;
         }
-        throw new RuntimeException("Пользователь с таким ID не найден");
+        throw new NoSuchUserException("Пользователь с таким ID не найден");
     }
 
     @Override
@@ -69,7 +76,7 @@ public class UsersServiceImpl implements UsersService {
         user.setGender(dto.getGender());
         user.setTelegramLogin(dto.getTelegramLogin());
         user.setPhone(dto.getPhone());
-        user.setRegisterData(dto.getRegisterData());
+        user.setRegisterData(LocalDateTime.now());
         user = usersRepository.save(user);
         List <Users> listFromOneUser = new ArrayList<>();
         listFromOneUser.add(user);
@@ -81,7 +88,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UsersDto updateUser(UsersDto dto, int id) {
         if (usersRepository.existsById(id)) {
-            Users user = new Users();
+            Users user = usersRepository.findById(id).get();
             user.setName(dto.getName());
             user.setSurname(dto.getSurname());
             user.setAge(dto.getAge());
@@ -95,7 +102,7 @@ public class UsersServiceImpl implements UsersService {
             UsersDto usersDtoResponseAfterSave = result.get(0);
             return usersDtoResponseAfterSave;
         }
-        throw new RuntimeException("Пользователь с таким ID не найден");
+        throw new NoSuchUserException("Пользователь с таким ID не найден");
     }
 
     @Override
@@ -104,7 +111,7 @@ public class UsersServiceImpl implements UsersService {
             usersRepository.deleteById(id);
             return "Пользователь с ID = " + id + " удален";
         }
-        throw new RuntimeException("Пользователь с таким ID не найден");
+        throw new NoSuchUserException("Пользователь с таким ID не найден");
     }
 }
 
