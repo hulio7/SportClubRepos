@@ -10,5 +10,4 @@ public interface UsersService {
     UsersDto addUser (UsersDto dto);
     UsersDto updateUser (UsersDto dto, int id);
     String deleteUser (int id);
-
 }
