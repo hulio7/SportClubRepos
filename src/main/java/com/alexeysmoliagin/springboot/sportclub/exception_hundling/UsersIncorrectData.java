@@ -1,13 +1,8 @@
 package com.alexeysmoliagin.springboot.sportclub.exception_hundling;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class UsersIncorrectData {
     private String info;
 }

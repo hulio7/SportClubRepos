@@ -6,7 +6,7 @@ import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpda
 import com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper.UsersMapper;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.constraints.NotNull;
@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UsersController {
 
-    private UsersService usersService;
-    private UsersMapper usersMapper;
+    private final UsersService usersService;
+    private final UsersMapper usersMapper;
 
     @GetMapping("/users")
     public List<UsersResponseModel> showAllUsers() {
@@ -34,8 +35,7 @@ public class UsersController {
 
     @PostMapping("/users")
     public UsersResponseModel addUser(@RequestBody UsersAddRequestModel model) {
-        UsersDto dto = usersMapper.toDto(model);
-        dto = usersService.addUser(dto);
+        UsersDto dto = usersService.addUser(usersMapper.toDto(model));
         return usersMapper.toResponseModel(dto);
     }
 
@@ -46,8 +46,7 @@ public class UsersController {
 
     @PostMapping("users/{id}")
     public UsersResponseModel updateUser(@NotNull @PathVariable int id, @RequestBody UsersUpdateRequestModel model) {
-        UsersDto dto = usersMapper.toDto(model);
-        dto = usersService.updateUser(dto, id);
+        UsersDto dto = usersService.updateUser(usersMapper.toDto(model), id);
         return usersMapper.toResponseModel(dto);
     }
 

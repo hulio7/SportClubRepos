@@ -2,21 +2,22 @@ package com.alexeysmoliagin.springboot.sportclub.service.impl;
 
 import com.alexeysmoliagin.springboot.sportclub.exception_hundling.NoSuchUserException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper.UsersMapper;
-import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
-import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
+import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UsersServiceImpl implements UsersService {
 
-    private UsersRepository usersRepository;
-    private UsersMapper usersMapper;
+    private final UsersRepository usersRepository;
+    private final UsersMapper usersMapper;
 
     @Override
     public List<UsersDto> getAllUsers() {
@@ -37,16 +38,14 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UsersDto addUser(UsersDto dto) {
-        Users user = usersMapper.toUsers(dto);
-        user = usersRepository.save(user);
+        Users user = usersRepository.save(usersMapper.toUsers(dto));
         return usersMapper.toDto(user);
     }
 
     @Override
     public UsersDto updateUser(UsersDto dto, int id) {
         if (usersRepository.existsById(id)) {
-            Users user = usersMapper.toUsers(dto);
-            user = usersRepository.save(user);
+            Users user = usersRepository.save(usersMapper.toUsers(dto));
             return usersMapper.toDto(user) ;
         }
         throw new NoSuchUserException("Пользователь с таким ID не найден");
