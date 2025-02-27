@@ -8,6 +8,7 @@ import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,12 +38,14 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional
     public UsersDto addUser(UsersDto dto) {
         Users user = usersRepository.save(usersMapper.toUsers(dto));
         return usersMapper.toDto(user);
     }
 
     @Override
+    @Transactional
     public UsersDto updateUser(UsersDto dto, int id) {
         if (usersRepository.existsById(id)) {
             Users user = usersRepository.save(usersMapper.toUsers(dto));
@@ -52,6 +55,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    @Transactional
     public String deleteUser(int id) {
         if (usersRepository.existsById(id)) {
             usersRepository.deleteById(id);
