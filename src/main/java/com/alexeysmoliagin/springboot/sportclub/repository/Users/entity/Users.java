@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.repository.users.entity;
+package com.alexeysmoliagin.springboot.sportclub.repository.Users.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

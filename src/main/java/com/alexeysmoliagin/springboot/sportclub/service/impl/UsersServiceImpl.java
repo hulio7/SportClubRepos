@@ -2,8 +2,8 @@ package com.alexeysmoliagin.springboot.sportclub.service.impl;
 
 import com.alexeysmoliagin.springboot.sportclub.exception_hundling.NoSuchUserException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper.UsersMapper;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
+import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
 import lombok.RequiredArgsConstructor;
