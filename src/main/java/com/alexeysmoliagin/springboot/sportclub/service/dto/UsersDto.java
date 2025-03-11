@@ -15,5 +15,4 @@ public class UsersDto {
     private String phone;
     private String telegramLogin;
     private LocalDateTime registerData;
-    private String terst;
 }
