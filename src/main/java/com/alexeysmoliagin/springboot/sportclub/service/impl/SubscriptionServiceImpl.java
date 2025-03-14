@@ -39,7 +39,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public SubscriptionDto getSubscription(int id) {
-        Subscription subscription = null;
         if (subscriptionRepository.existsById(id)) {
             Optional <Subscription> optional = subscriptionRepository.findById(id);
             return subscriptionMapper.toDto(optional.get());
