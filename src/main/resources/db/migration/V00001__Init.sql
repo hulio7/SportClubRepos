@@ -8,4 +8,3 @@ CREATE TABLE users (
     telegram_login VARCHAR(30),
     register_date DATE
 );
--- CREATE TABLE country (id INT, name VARCHAR(30));
