@@ -16,8 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private SubscriptionRepository subscriptionRepository;
-    private SubscriptionMapper subscriptionMapper;
+    private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionMapper subscriptionMapper;
 
     @Transactional
     @Override
