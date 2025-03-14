@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class SubscriptionController {
 
-    private SubscriptionService subscriptionService;
-    private SubscriptionMapper subscriptionMapper;
+    private final SubscriptionService subscriptionService;
+    private final SubscriptionMapper subscriptionMapper;
 
     @PostMapping("/subscription")
     public SubscriptionResponseModel updateSubscription(@RequestBody SubscriptionCreateRequestModel model) {
@@ -40,9 +40,4 @@ public class SubscriptionController {
     public String deleteSubscription (@PathVariable @NotNull int id) {
        return subscriptionService.deleteSubscription(id);
     }
-
-   // ("/subscription/buy")
-//    public String buySubscription () {
-//
-//    }
 }

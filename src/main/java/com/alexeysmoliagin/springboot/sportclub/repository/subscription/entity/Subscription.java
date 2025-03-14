@@ -16,4 +16,7 @@ public class Subscription {
     private String name;
     @Column(name = "type")
     private TypeSubscription type;
+    @Column(name = "price")
+    private int price;
+
 }

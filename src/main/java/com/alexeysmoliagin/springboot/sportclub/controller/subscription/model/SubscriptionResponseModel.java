@@ -8,4 +8,6 @@ public class SubscriptionResponseModel {
     private int id;
     private String name;
     private TypeSubscription type;
+    private int price;
+
 }

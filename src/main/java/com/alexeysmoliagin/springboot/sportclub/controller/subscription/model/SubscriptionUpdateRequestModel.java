@@ -7,4 +7,5 @@ import lombok.Data;
 public class SubscriptionUpdateRequestModel {
     private String name;
     private TypeSubscription type;
+    private int price;
 }
