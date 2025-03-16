@@ -1,6 +1,6 @@
-package com.alexeysmoliagin.springboot.sportclub.service;
+package com.alexeysmoliagin.springboot.sportclub.service.user;
 
-import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import com.alexeysmoliagin.springboot.sportclub.service.user.dto.UsersDto;
 
 import java.util.List;
 

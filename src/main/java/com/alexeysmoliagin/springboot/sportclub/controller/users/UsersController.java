@@ -3,9 +3,9 @@ package com.alexeysmoliagin.springboot.sportclub.controller.users;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersAddRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpdateRequestModel;
-import com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper.UsersMapper;
-import com.alexeysmoliagin.springboot.sportclub.service.UsersService;
-import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
+import com.alexeysmoliagin.springboot.sportclub.service.user.UsersService;
+import com.alexeysmoliagin.springboot.sportclub.service.user.dto.UsersDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

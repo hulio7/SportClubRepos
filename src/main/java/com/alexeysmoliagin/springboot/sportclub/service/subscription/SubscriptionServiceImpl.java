@@ -1,11 +1,9 @@
-package com.alexeysmoliagin.springboot.sportclub.service.impl;
+package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
-import com.alexeysmoliagin.springboot.sportclub.exception_hundling.NoSuchUserException;
-import com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper.SubscriptionMapper;
+import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchUserException;
+import com.alexeysmoliagin.springboot.sportclub.mapper.subcription.SubscriptionMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
-import com.alexeysmoliagin.springboot.sportclub.service.SubscriptionService;
-import com.alexeysmoliagin.springboot.sportclub.service.dto.SubscriptionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

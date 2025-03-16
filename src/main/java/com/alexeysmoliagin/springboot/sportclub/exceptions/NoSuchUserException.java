@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.exception_hundling;
+package com.alexeysmoliagin.springboot.sportclub.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 

@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.service.dto;
+package com.alexeysmoliagin.springboot.sportclub.service.user.dto;
 
 import lombok.*;
 

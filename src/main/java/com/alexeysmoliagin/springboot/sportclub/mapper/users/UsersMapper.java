@@ -1,12 +1,14 @@
-package com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper;
+package com.alexeysmoliagin.springboot.sportclub.mapper.users;
 
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersAddRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpdateRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
-import com.alexeysmoliagin.springboot.sportclub.service.dto.UsersDto;
+import com.alexeysmoliagin.springboot.sportclub.service.user.dto.UsersDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -20,4 +22,7 @@ public interface UsersMapper {
     UsersResponseModel toResponseModel (UsersDto usersDto);
     List <UsersDto> toUsersDtoList(List <Users> listUsers);
     List <UsersResponseModel> toUsersResponseModel(List <UsersDto> listDto);
+
+    @Mapping(target = "id", ignore = true)
+    Users updateEntity(@MappingTarget Users user, UsersDto dto);
 }
