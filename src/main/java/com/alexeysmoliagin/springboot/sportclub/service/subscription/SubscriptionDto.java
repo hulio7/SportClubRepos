@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.service.dto;
+package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.TypeSubscription;
 import lombok.Data;

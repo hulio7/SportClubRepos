@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.exception_hundling;
+package com.alexeysmoliagin.springboot.sportclub.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class UsersGlobalExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<UsersIncorrectData> handlerException (NoSuchUserException exception) {
+    public ResponseEntity<UsersIncorrectData> handlerException (NoSuchEntityException exception) {
         UsersIncorrectData data = new UsersIncorrectData();
         data.setInfo(exception.getMessage());
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);

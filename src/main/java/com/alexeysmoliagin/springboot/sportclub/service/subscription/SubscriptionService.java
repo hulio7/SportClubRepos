@@ -1,6 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.service;
-
-import com.alexeysmoliagin.springboot.sportclub.service.dto.SubscriptionDto;
+package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
 public interface SubscriptionService {
 
