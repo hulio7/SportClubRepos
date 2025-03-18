@@ -4,7 +4,6 @@ import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

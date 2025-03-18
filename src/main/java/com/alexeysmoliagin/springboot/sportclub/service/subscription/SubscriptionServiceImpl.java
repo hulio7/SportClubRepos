@@ -3,7 +3,6 @@ package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.SubscriptionMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
