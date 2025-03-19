@@ -3,9 +3,9 @@ package com.alexeysmoliagin.springboot.sportclub.controller.subscription;
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionCreateRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionUpdateRequestModel;
-import com.alexeysmoliagin.springboot.sportclub.mapper.usersMapper.SubscriptionMapper;
-import com.alexeysmoliagin.springboot.sportclub.service.SubscriptionService;
-import com.alexeysmoliagin.springboot.sportclub.service.dto.SubscriptionDto;
+import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.SubscriptionMapper;
+import com.alexeysmoliagin.springboot.sportclub.service.subscription.SubscriptionService;
+import com.alexeysmoliagin.springboot.sportclub.service.subscription.SubscriptionDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class SubscriptionController {
     private final SubscriptionMapper subscriptionMapper;
 
     @PostMapping("/subscription")
-    public SubscriptionResponseModel updateSubscription(@RequestBody SubscriptionCreateRequestModel model) {
+    public SubscriptionResponseModel createSubscription(@RequestBody SubscriptionCreateRequestModel model) {
         SubscriptionDto dto = subscriptionService.createSubscription(subscriptionMapper.toDto(model));
         return subscriptionMapper.toResponseModel(dto);
     }
