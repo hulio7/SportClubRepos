@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.service.subscription;
+package com.alexeysmoliagin.springboot.sportclub.controller.subscription.model;
 
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.TypeSubscription;
 import lombok.Data;
@@ -6,11 +6,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class SubscriptionDto {
-    private int id;
+public class SubscriptionExtensionRequestModel {
     private String name;
     private TypeSubscription type;
     private int price;
     private LocalDateTime startOfAction;
-    private LocalDateTime endOfAction;
 }

@@ -1,6 +1,7 @@
 package com.alexeysmoliagin.springboot.sportclub.mapper.subscription;
 
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionCreateRequestModel;
+import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionExtensionRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionResponseModel;
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionUpdateRequestModel;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
@@ -17,6 +18,7 @@ public interface SubscriptionMapper {
     SubscriptionDto toDto (SubscriptionCreateRequestModel model);
     SubscriptionResponseModel toResponseModel (SubscriptionDto dto);
     SubscriptionDto toDto (SubscriptionUpdateRequestModel model);
+    SubscriptionDto toDto (SubscriptionExtensionRequestModel model);
 
     @Mapping(target = "id", ignore = true)
     Subscription updateEntity(@MappingTarget Subscription subscription, SubscriptionDto dto);
