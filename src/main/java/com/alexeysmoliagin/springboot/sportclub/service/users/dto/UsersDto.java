@@ -1,7 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.service.users.dto;
 
-import lombok.*;
-
+import lombok.Data;
 
 import java.time.LocalDateTime;
 

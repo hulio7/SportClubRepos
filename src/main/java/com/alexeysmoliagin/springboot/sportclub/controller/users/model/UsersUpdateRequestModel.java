@@ -1,8 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 public class UsersUpdateRequestModel {

@@ -1,6 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 

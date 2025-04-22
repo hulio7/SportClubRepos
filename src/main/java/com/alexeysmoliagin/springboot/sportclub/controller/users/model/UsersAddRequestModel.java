@@ -1,7 +1,7 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class UsersAddRequestModel {

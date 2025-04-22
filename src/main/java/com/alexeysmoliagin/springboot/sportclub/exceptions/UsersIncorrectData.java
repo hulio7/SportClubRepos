@@ -1,6 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.exceptions;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class UsersIncorrectData {
