@@ -45,7 +45,8 @@ public class UsersController {
     }
 
     @PostMapping("users/{id}")
-    public UsersResponseModel updateUser(@NotNull @PathVariable int id, @RequestBody UsersUpdateRequestModel model) {
+    public UsersResponseModel updateUser(@NotNull @PathVariable int id,
+                                         @RequestBody UsersUpdateRequestModel model) {
         UsersDto dto = usersService.updateUser(usersMapper.toDto(model), id);
         return usersMapper.toResponseModel(dto);
     }

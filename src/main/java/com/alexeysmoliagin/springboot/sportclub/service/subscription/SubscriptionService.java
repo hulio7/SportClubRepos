@@ -1,13 +1,13 @@
 package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
-import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDtoOnlyId;
+import java.util.List;
 
 public interface SubscriptionService {
 
-    SubscriptionDto createSubscription (SubscriptionDto dto, UsersDtoOnlyId usersDtoOnlyId);
-    SubscriptionDto updateSubscription (SubscriptionDto dto, int id);
+    SubscriptionDto buySubscription(BuySubscriptionDto dto);
     SubscriptionDto getSubscription (int id);
     String deleteSubscription (int id);
-    SubscriptionDto extensionSubscription (SubscriptionDto dto);
+    SubscriptionDto extensionSubscription (SubscriptionExtensionDto dto);
+    List<SubscriptionDto> getAllSubscription ();
 
 }

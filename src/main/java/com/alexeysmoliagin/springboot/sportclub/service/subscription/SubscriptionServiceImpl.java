@@ -2,12 +2,13 @@ package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
 import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.SubscriptionMapper;
-import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
+import com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription.UserSubscriptionMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
+import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
+import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
-import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDtoOnlyId;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,29 +22,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionMapper subscriptionMapper;
-    private final UsersMapper usersMapper;
     private final UsersRepository usersRepository;
+    private final UsersSubscriptionRepository usersSubscriptionRepository;
+    private final UserSubscriptionMapper userSubscriptionMapper;
 
     @Transactional
     @Override
-    public SubscriptionDto createSubscription(SubscriptionDto dto, UsersDtoOnlyId usersDtoOnlyId) {
+    public SubscriptionDto buySubscription(BuySubscriptionDto dto) {
+        usersRepository.findById(dto.getUserId())
+                .orElseThrow(()-> new EntityNotFoundException("Пользователь с %d не найден"));
         var subscription = subscriptionMapper.toSubscription(dto);
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
         subscription.setStartOfAction(tomorrow);
         subscription.setEndOfAction(tomorrow.plusYears(1));
-        subscriptionRepository.save(subscription);
-        Users user = usersMapper.toUsers(usersDtoOnlyId);
-        user.addSubscriptionToUser(subscription);
-        return subscriptionMapper.toDto(subscription);
-    }
-
-    @Transactional
-    @Override
-    public SubscriptionDto updateSubscription(SubscriptionDto dto, int id) {
-        var subscription = subscriptionRepository.findById(id).
-                orElseThrow(() -> new NoSuchEntityException(String.format("Абонемент с ID %d не найден", id)));
-        var updateSubscription = subscriptionRepository.save(subscriptionMapper.updateEntity(subscription, dto));
-            return subscriptionMapper.toDto(updateSubscription);
+        Subscription saved = subscriptionRepository.save(subscription);
+        UserSubscription userSubscription = userSubscriptionMapper.toEntity(subscription, dto.getUserId());
+        usersSubscriptionRepository.save(userSubscription);
+        return subscriptionMapper.toDto(saved);
     }
 
     @Override
@@ -57,6 +52,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public String deleteSubscription(int id) {
         if (subscriptionRepository.existsById(id)) {
+            usersSubscriptionRepository.deleteBySubscriptionId(id);
             subscriptionRepository.deleteById(id);
             return String.format("Абонемент с ID %d удален", id);
         }
@@ -64,10 +60,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public SubscriptionDto extensionSubscription(SubscriptionDto dto) {
-        var subscription = subscriptionMapper.toSubscription(dto);
-        subscription.setEndOfAction(dto.getStartOfAction().plusYears(1));
-        subscriptionRepository.save(subscription);
-        return subscriptionMapper.toDto(subscription);
+    @Transactional
+    public SubscriptionDto extensionSubscription(SubscriptionExtensionDto dto) {
+        Subscription current = subscriptionRepository.findById(dto.getSubscriptionId())
+                .orElseThrow(() -> new EntityNotFoundException("Абонемент с ID %d не найден"));
+        var newSubscription = subscriptionMapper.toSubscription(current);
+        newSubscription.setStartOfAction(current.getEndOfAction());
+        newSubscription.setEndOfAction(current.getEndOfAction().plusYears(1));
+        newSubscription.setPrice(dto.getPrice());
+        Subscription saved = subscriptionRepository.save(newSubscription);
+        UserSubscription entity = userSubscriptionMapper.toEntity(saved, dto.getUserId());
+        usersSubscriptionRepository.save(entity);
+        return subscriptionMapper.toDto(saved);
+    }
+
+    @Override
+    public List<SubscriptionDto> getAllSubscription() {
+        var allSubscription = subscriptionRepository.findAll();
+        return subscriptionMapper.toListSubscriptionDto(allSubscription);
     }
 }

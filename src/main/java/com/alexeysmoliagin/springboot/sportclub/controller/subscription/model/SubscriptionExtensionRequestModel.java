@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class SubscriptionExtensionRequestModel {
-    private String name;
-    private TypeSubscription type;
     private int price;
-    private LocalDateTime startOfAction;
+    private Integer userId;
 }

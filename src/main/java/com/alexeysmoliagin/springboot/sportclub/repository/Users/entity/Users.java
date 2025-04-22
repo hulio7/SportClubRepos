@@ -30,16 +30,4 @@ public class Users {
     private String telegramLogin;
     @Column (name = "register_date")
     private LocalDateTime registerData;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable (name = "user_subscription", joinColumns = @JoinColumn (name = "user_id"),
-            inverseJoinColumns = @JoinColumn (name = "subscription_id"))
-    private List <Subscription> subscriptions;
-
-    public void addSubscriptionToUser (Subscription subscription) {
-        if (subscriptions==null) {
-            subscriptions = new ArrayList<>();
-        }
-        subscriptions.add(subscription);
-    }
 }

@@ -3,6 +3,7 @@ package com.alexeysmoliagin.springboot.sportclub.service.users;
 import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
+    private final UsersSubscriptionRepository usersSubscriptionRepository;
 
     @Override
     public List<UsersDto> getAllUsers() {
@@ -53,6 +55,7 @@ public class UsersServiceImpl implements UsersService {
     @Transactional
     public String deleteUser(int id) {
         if (usersRepository.existsById(id)) {
+            usersSubscriptionRepository.deleteByUserId(id);
             usersRepository.deleteById(id);
             return String.format("Пользователь с ID %d удален", id);
         }
