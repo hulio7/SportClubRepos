@@ -72,8 +72,6 @@ class SubscriptionServiceTest {
         assertThrows(EntityNotFoundException.class, ()-> subscriptionService.buySubscription(subscriptionDto));
     }
 
-// сравниваем результат метода сервиса со значением, которое мы ожидаем получить
-
     @Test
     @DisplayName("getSubscription: all ok when subscription exists")
     void getSubscription() {
@@ -101,7 +99,7 @@ class SubscriptionServiceTest {
         Subscription subscription = Instancio.create(Subscription.class);
         when(subscriptionRepository.existsById(subscription.getId())).thenReturn(true);
         subscriptionService.deleteSubscription(subscription.getId());
-        verify(subscriptionRepository.existsById(subscription.getId()));
+        verify(subscriptionRepository).existsById(subscription.getId());
     }
 
     @Test

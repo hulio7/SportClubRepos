@@ -4,6 +4,7 @@ import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapperImpl;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
+import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,8 @@ import static org.mockito.Mockito.*;
 class UsersServiceTest {
     @Mock
     private UsersRepository usersRepository;
+    @Mock
+    private UsersSubscriptionRepository usersSubscriptionRepository;
     @Spy
     private UsersMapperImpl usersMapper;
     @InjectMocks
