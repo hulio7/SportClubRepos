@@ -6,8 +6,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class SubscriptionDto {
-    private int id;
+public class BuySubscriptionDto {
+    private Integer userId;
     private String name;
     private TypeSubscription type;
     private int price;

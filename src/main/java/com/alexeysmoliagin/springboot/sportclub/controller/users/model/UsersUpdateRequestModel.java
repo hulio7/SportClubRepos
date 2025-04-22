@@ -1,6 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class UsersUpdateRequestModel {
@@ -10,5 +10,4 @@ public class UsersUpdateRequestModel {
     private int age;
     private String phone;
     private String telegramLogin;
-
 }

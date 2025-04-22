@@ -1,9 +1,12 @@
 package com.alexeysmoliagin.springboot.sportclub.repository.users.entity;
 
+import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table (name = "users")

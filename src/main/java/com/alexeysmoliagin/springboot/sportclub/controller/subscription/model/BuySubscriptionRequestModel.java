@@ -4,8 +4,9 @@ import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.T
 import lombok.Data;
 
 @Data
-public class SubscriptionUpdateRequestModel {
+public class BuySubscriptionRequestModel {
     private String name;
     private TypeSubscription type;
     private int price;
+    private Integer userId;
 }

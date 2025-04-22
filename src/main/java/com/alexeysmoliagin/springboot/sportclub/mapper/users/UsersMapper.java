@@ -24,5 +24,6 @@ public interface UsersMapper {
     List <UsersResponseModel> toUsersResponseModel(List <UsersDto> listDto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "registerData", ignore = true)
     Users updateEntity(@MappingTarget Users user, UsersDto dto);
 }

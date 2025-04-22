@@ -6,10 +6,14 @@ import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpda
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
 import com.alexeysmoliagin.springboot.sportclub.service.users.UsersService;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,8 @@ public class UsersController {
     }
 
     @PostMapping("users/{id}")
-    public UsersResponseModel updateUser(@NotNull @PathVariable int id, @RequestBody UsersUpdateRequestModel model) {
+    public UsersResponseModel updateUser(@NotNull @PathVariable int id,
+                                         @RequestBody UsersUpdateRequestModel model) {
         UsersDto dto = usersService.updateUser(usersMapper.toDto(model), id);
         return usersMapper.toResponseModel(dto);
     }
