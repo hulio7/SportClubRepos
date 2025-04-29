@@ -2,6 +2,7 @@ package com.alexeysmoliagin.springboot.sportclub.service.users;
 
 import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
+import com.alexeysmoliagin.springboot.sportclub.infrastructure.output.KafkaProducer;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
@@ -19,6 +20,7 @@ public class UsersServiceImpl implements UsersService {
     private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
     private final UsersSubscriptionRepository usersSubscriptionRepository;
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public List<UsersDto> getAllUsers() {
@@ -39,6 +41,8 @@ public class UsersServiceImpl implements UsersService {
         var user = usersMapper.toUsers(dto);
         user.setRegisterData(LocalDateTime.now());
         usersRepository.save(user);
+//        kafkaProducer.sendMessage(user.getName() + " " + user.getSurname() +
+//                " , поздравляем с приобретением абонемента и вступлением в наш клуб!", "topic-1");
         return usersMapper.toDto(user);
     }
 
