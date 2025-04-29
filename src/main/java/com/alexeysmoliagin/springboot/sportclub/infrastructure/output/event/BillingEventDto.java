@@ -1,7 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.infrastructure.output.event;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 public class BillingEventDto {

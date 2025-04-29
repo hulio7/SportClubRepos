@@ -20,7 +20,6 @@ public class UsersServiceImpl implements UsersService {
     private final UsersRepository usersRepository;
     private final UsersMapper usersMapper;
     private final UsersSubscriptionRepository usersSubscriptionRepository;
-    private final KafkaProducer kafkaProducer;
 
     @Override
     public List<UsersDto> getAllUsers() {
