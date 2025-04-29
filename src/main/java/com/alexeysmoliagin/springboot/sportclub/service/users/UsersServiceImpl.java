@@ -61,19 +61,4 @@ public class UsersServiceImpl implements UsersService {
         }
         throw new NoSuchEntityException(String.format("Пользователь с ID %d не найден", id));
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

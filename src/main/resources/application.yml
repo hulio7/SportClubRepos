@@ -1,6 +1,11 @@
+server:
+  port: 8083
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/sportclub
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+
