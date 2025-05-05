@@ -19,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.alexeysmoliagin.springboot.sportclub.messageSource.ErrorsMessage.SubscriptionMessage.SUBSCRIPTION_DELETE;
+import static com.alexeysmoliagin.springboot.sportclub.messageSource.ErrorsMessage.SubscriptionMessage.SUBSCRIPTION_NOT_EXIST;
+import static com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory.getMessage;
+
 @Service
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -35,7 +39,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public SubscriptionDto buySubscription(BuySubscriptionDto dto) {
         var user = usersRepository.findById(dto.getUserId())
-                .orElseThrow(()-> new EntityNotFoundException("Пользователь с %d не найден"));
+                .orElseThrow(()-> new EntityNotFoundException(getMessage(SUBSCRIPTION_NOT_EXIST, dto.getUserId())));
         var subscription = subscriptionMapper.toSubscription(dto);
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
         subscription.setStartOfAction(tomorrow);
@@ -51,7 +55,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public SubscriptionDto getSubscription(int id) {
         var subscription = subscriptionRepository.findById(id)
-                .orElseThrow(()-> new NoSuchEntityException(String.format("Абонемент с ID %d не найден", id)));
+                .orElseThrow(()-> new NoSuchEntityException(getMessage(SUBSCRIPTION_NOT_EXIST, id)));
             return subscriptionMapper.toDto(subscription);
     }
 
@@ -61,16 +65,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (subscriptionRepository.existsById(id)) {
             usersSubscriptionRepository.deleteBySubscriptionId(id);
             subscriptionRepository.deleteById(id);
-            return String.format("Абонемент с ID %d удален", id);
+            return getMessage(SUBSCRIPTION_DELETE, id);
         }
-        throw new NoSuchEntityException(String.format("Абонемент с ID %d не найден", id));
+        throw new NoSuchEntityException(getMessage(SUBSCRIPTION_NOT_EXIST, id));
     }
 
     @Override
     @Transactional
     public SubscriptionDto extensionSubscription(SubscriptionExtensionDto dto) {
         Subscription current = subscriptionRepository.findById(dto.getSubscriptionId())
-                .orElseThrow(() -> new EntityNotFoundException("Абонемент с ID %d не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(getMessage(SUBSCRIPTION_NOT_EXIST, dto.getSubscriptionId())));
         var newSubscription = subscriptionMapper.toSubscription(current);
         newSubscription.setStartOfAction(current.getEndOfAction());
         newSubscription.setEndOfAction(current.getEndOfAction().plusYears(1));
