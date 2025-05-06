@@ -1,6 +1,5 @@
 package com.alexeysmoliagin.springboot.sportclub.messageSource;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
@@ -16,5 +15,9 @@ public class MessageSourceFactory {
 
     public static String getMessage (String code, Object... arg) {
         return messageSource.getMessage(code, arg, Locale.forLanguageTag("ru"));
+    }
+
+    public static void setMessageSource(MessageSource messageSource) {
+        MessageSourceFactory.messageSource = messageSource;
     }
 }
