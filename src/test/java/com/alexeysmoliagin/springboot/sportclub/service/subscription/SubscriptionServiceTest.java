@@ -1,16 +1,19 @@
 package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
-import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
+import com.alexeysmoliagin.springboot.sportclub.exceptions.EntityNotFoundException;
+import com.alexeysmoliagin.springboot.sportclub.mapper.BillingMapperImpl;
 import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.SubscriptionMapperImpl;
 import com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription.UserSubscriptionMapperImpl;
+import com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.alexeysmoliagin.springboot.sportclub.service.event.BillingService;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,8 +48,20 @@ class SubscriptionServiceTest {
     private SubscriptionMapperImpl subscriptionMapper;
     @Spy
     private UserSubscriptionMapperImpl userSubscriptionMapper;
+    @Spy
+    private BillingMapperImpl billingMapper;
+    @Mock
+    private BillingService billingService;
     @InjectMocks
     private SubscriptionServiceImpl subscriptionService;
+
+    @BeforeEach
+    public void init () {
+        MessageSource messageSource = mock(MessageSource.class);
+        lenient().when(messageSource.getMessage(any(), any(),any()))
+                .thenAnswer(invocation -> invocation.getArguments()[0]);
+        MessageSourceFactory.setMessageSource(messageSource);
+    }
 
     @Test
     @DisplayName("buySubscription: all ok when subscription exists")
@@ -58,6 +77,8 @@ class SubscriptionServiceTest {
         when(userSubscriptionMapper.toEntity(any(), anyInt())).thenCallRealMethod();
         when(usersSubscriptionRepository.save(any())).thenReturn(any());
         when(subscriptionMapper.toDto(subscription)).thenCallRealMethod();
+        when(billingMapper.toBillingEventDto(any(), anyInt())).thenCallRealMethod();
+        doNothing().when(billingService).sendForCalculateTax(any());
         SubscriptionDto actual = subscriptionService.buySubscription(buySubscriptionDto);
         assertEquals(buySubscriptionDto.getName(), actual.getName());
         assertEquals(buySubscriptionDto.getType(), actual.getType());
@@ -69,7 +90,8 @@ class SubscriptionServiceTest {
     void buySubscriptionCase2() {
         BuySubscriptionDto subscriptionDto = Instancio.create(BuySubscriptionDto.class);
         when(usersRepository.findById(anyInt())).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, ()-> subscriptionService.buySubscription(subscriptionDto));
+        assertThrows(EntityNotFoundException.class, ()->
+        subscriptionService.buySubscription(subscriptionDto));
     }
 
     @Test
@@ -90,7 +112,7 @@ class SubscriptionServiceTest {
     @DisplayName("getSubscription: throw NoSuchEntityException when subscription not exists")
     void getSubscriptionCase2() {
         when(subscriptionRepository.findById(anyInt())).thenReturn(Optional.empty());
-        assertThrows(NoSuchEntityException.class, ()-> subscriptionService.getSubscription(anyInt()));
+        assertThrows(EntityNotFoundException.class, ()-> subscriptionService.getSubscription(anyInt()));
     }
 
     @Test
@@ -106,7 +128,7 @@ class SubscriptionServiceTest {
     @DisplayName("deleteSubscription: throw NoSuchEntityException when subscription not exists")
     void deleteSubscriptionCase2() {
         when(subscriptionRepository.existsById(anyInt())).thenReturn(false);
-        assertThrows(NoSuchEntityException.class, ()-> subscriptionService.deleteSubscription(anyInt()));
+        assertThrows(EntityNotFoundException.class, ()-> subscriptionService.deleteSubscription(anyInt()));
     }
 
     @Test

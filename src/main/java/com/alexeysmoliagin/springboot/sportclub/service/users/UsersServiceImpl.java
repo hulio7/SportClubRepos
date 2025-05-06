@@ -1,8 +1,6 @@
 package com.alexeysmoliagin.springboot.sportclub.service.users;
 
-import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
-import com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
@@ -13,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.alexeysmoliagin.springboot.sportclub.exceptions.ExceptionFactory.entityNotFoundException;
 import static com.alexeysmoliagin.springboot.sportclub.messageSource.ErrorsMessage.UserMessage.USER_DELETE;
 import static com.alexeysmoliagin.springboot.sportclub.messageSource.ErrorsMessage.UserMessage.USER_NOT_EXIST;
 import static com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory.getMessage;
@@ -36,7 +35,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UsersDto getUser(int id) {
         var user = usersRepository.findById(id)
-                .orElseThrow(() -> new NoSuchEntityException(getMessage(USER_NOT_EXIST, id)));
+                .orElseThrow(() -> entityNotFoundException(USER_NOT_EXIST, id));
         return usersMapper.toDto(user);
     }
 
@@ -53,7 +52,7 @@ public class UsersServiceImpl implements UsersService {
     @Transactional
     public UsersDto updateUser(UsersDto dto, int id) {
         var user = usersRepository.findById(id)
-                .orElseThrow(() -> new NoSuchEntityException(getMessage(USER_NOT_EXIST, id)));
+                .orElseThrow(() -> entityNotFoundException(USER_NOT_EXIST, id));
         var updatedUser = usersRepository.save(usersMapper.updateEntity(user, dto));
         return usersMapper.toDto(updatedUser);
     }
@@ -66,6 +65,6 @@ public class UsersServiceImpl implements UsersService {
             usersRepository.deleteById(id);
             return getMessage(USER_DELETE, id);
         }
-        throw new NoSuchEntityException(getMessage(USER_NOT_EXIST, id));
+        throw entityNotFoundException(USER_NOT_EXIST, id);
     }
 }

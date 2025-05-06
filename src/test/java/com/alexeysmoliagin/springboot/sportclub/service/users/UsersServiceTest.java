@@ -1,12 +1,14 @@
 package com.alexeysmoliagin.springboot.sportclub.service.users;
 
-import com.alexeysmoliagin.springboot.sportclub.exceptions.NoSuchEntityException;
+import com.alexeysmoliagin.springboot.sportclub.exceptions.EntityNotFoundException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapperImpl;
+import com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +34,14 @@ class UsersServiceTest {
     private UsersMapperImpl usersMapper;
     @InjectMocks
     private UsersServiceImpl usersService;
+
+    @BeforeEach
+    public void init () {
+        MessageSource messageSource = mock(MessageSource.class);
+        lenient().when(messageSource.getMessage(any(), any(),any()))
+                .thenAnswer(invocation -> invocation.getArguments()[0]);
+        MessageSourceFactory.setMessageSource(messageSource);
+    }
 
     @Test
     void getAllUsers() {
@@ -57,8 +68,9 @@ class UsersServiceTest {
     @Test
     @DisplayName("throw NoSuchEntityException when user not exists")
     void getUserCase2 () {
+        MessageSource messageSource = mock(MessageSource.class);
         when(usersRepository.findById(anyInt())).thenReturn(Optional.empty());
-        assertThrows(NoSuchEntityException.class, ()-> usersService.getUser(anyInt()));
+        assertThrows(EntityNotFoundException.class, ()-> usersService.getUser(anyInt()));
     }
 
     @Test
@@ -96,7 +108,7 @@ class UsersServiceTest {
         UsersDto usersDto = Instancio.create(UsersDto.class);
         int userId = 123;
         when(usersRepository.findById(userId)).thenReturn(Optional.empty());
-        assertThrows(NoSuchEntityException.class, ()-> usersService.updateUser(usersDto, userId));
+        assertThrows(EntityNotFoundException.class, ()-> usersService.updateUser(usersDto, userId));
     }
 
     @Test
@@ -113,6 +125,6 @@ class UsersServiceTest {
     @DisplayName("throw NoSuchEntityException when user not exists")
     void deleteUserCase2() {
         when(usersRepository.existsById(anyInt())).thenReturn(false);
-        assertThrows(NoSuchEntityException.class, ()-> usersService.deleteUser(anyInt()));
+        assertThrows(EntityNotFoundException.class, ()-> usersService.deleteUser(anyInt()));
     }
 }
