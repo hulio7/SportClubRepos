@@ -1,7 +1,7 @@
 package com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription;
 
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
+import com.alexeysmoliagin.springboot.sportclub.repository.usersubscription.UserSubscription;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

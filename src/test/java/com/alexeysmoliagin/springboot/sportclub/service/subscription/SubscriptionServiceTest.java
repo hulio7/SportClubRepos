@@ -7,10 +7,10 @@ import com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription.UserSubs
 import com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.user.UserRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.user.entity.User;
+import com.alexeysmoliagin.springboot.sportclub.repository.usersubscription.UserSubscription;
+import com.alexeysmoliagin.springboot.sportclub.repository.usersubscription.UserSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.event.BillingService;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,9 +41,9 @@ class SubscriptionServiceTest {
     @Mock
     private SubscriptionRepository subscriptionRepository;
     @Mock
-    private UsersSubscriptionRepository usersSubscriptionRepository;
+    private UserSubscriptionRepository userSubscriptionRepository;
     @Mock
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
     @Spy
     private SubscriptionMapperImpl subscriptionMapper;
     @Spy
@@ -71,11 +71,11 @@ class SubscriptionServiceTest {
         subscription.setPrice(buySubscriptionDto.getPrice());
         subscription.setType(buySubscriptionDto.getType());
         subscription.setName(buySubscriptionDto.getName());
-        when(usersRepository.findById(buySubscriptionDto.getUserId())).thenReturn(Optional.of(new Users()));
+        when(userRepository.findById(buySubscriptionDto.getUserId())).thenReturn(Optional.of(new User()));
         when(subscriptionMapper.toSubscription(buySubscriptionDto)).thenCallRealMethod();
         when(subscriptionRepository.save(any())).thenReturn(subscription);
         when(userSubscriptionMapper.toEntity(any(), anyInt())).thenCallRealMethod();
-        when(usersSubscriptionRepository.save(any())).thenReturn(any());
+        when(userSubscriptionRepository.save(any())).thenReturn(any());
         when(subscriptionMapper.toDto(subscription)).thenCallRealMethod();
         when(billingMapper.toBillingEventDto(any(), anyInt())).thenCallRealMethod();
         doNothing().when(billingService).sendForCalculateTax(any());
@@ -89,7 +89,7 @@ class SubscriptionServiceTest {
     @DisplayName("buySubscription: throw EntityNotFoundException when users not exists")
     void buySubscriptionCase2() {
         BuySubscriptionDto subscriptionDto = Instancio.create(BuySubscriptionDto.class);
-        when(usersRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, ()->
         subscriptionService.buySubscription(subscriptionDto));
     }
@@ -140,7 +140,7 @@ class SubscriptionServiceTest {
         when(subscriptionMapper.toSubscription(subscription)).thenCallRealMethod();
         when(subscriptionRepository.save(any())).thenReturn(subscription);
         when(userSubscriptionMapper.toEntity(any(), anyInt())).thenCallRealMethod();
-        when(usersSubscriptionRepository.save(any())).thenReturn(new UserSubscription());
+        when(userSubscriptionRepository.save(any())).thenReturn(new UserSubscription());
         when(subscriptionMapper.toDto(any(Subscription.class))).thenCallRealMethod();
         SubscriptionDto actual = subscriptionService.extensionSubscription(subscriptionExtensionDto);
         assertEquals(subscription.getType(), actual.getType());

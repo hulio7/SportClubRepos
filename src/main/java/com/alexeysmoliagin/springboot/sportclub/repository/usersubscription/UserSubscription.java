@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.repository.userssubscription;
+package com.alexeysmoliagin.springboot.sportclub.repository.usersubscription;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

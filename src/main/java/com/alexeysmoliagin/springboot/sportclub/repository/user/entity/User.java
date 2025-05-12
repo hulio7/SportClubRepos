@@ -1,4 +1,4 @@
-package com.alexeysmoliagin.springboot.sportclub.repository.users.entity;
+package com.alexeysmoliagin.springboot.sportclub.repository.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table (name = "users")
 @Data
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id")

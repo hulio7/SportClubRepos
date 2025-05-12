@@ -1,18 +1,19 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
-public class UsersResponseModel {
-    private int id;
+public class UserAddRequestModel {
+    @NotBlank
     private String name;
+    @NotBlank
     private String surname;
     private String gender;
     private int age;
+    @NotBlank
     private String phone;
+    @NotBlank
     private String telegramLogin;
-    private LocalDateTime registerData;
 
 }

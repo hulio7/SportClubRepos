@@ -1,11 +1,11 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users;
 
-import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersAddRequestModel;
-import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersResponseModel;
-import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UsersUpdateRequestModel;
-import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
-import com.alexeysmoliagin.springboot.sportclub.service.users.UsersService;
-import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
+import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UserAddRequestModel;
+import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UserResponseModel;
+import com.alexeysmoliagin.springboot.sportclub.controller.users.model.UserUpdateRequestModel;
+import com.alexeysmoliagin.springboot.sportclub.mapper.user.UserMapper;
+import com.alexeysmoliagin.springboot.sportclub.service.users.UserService;
+import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UserDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,48 +22,48 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsersController {
 
-    private final UsersService usersService;
-    private final UsersMapper usersMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @GetMapping("/users")
-    public List<UsersResponseModel> showAllUsers() {
-        List<UsersDto> allUsers = usersService.getAllUsers();
-        return usersMapper.toUsersResponseModel(allUsers);
+    public List<UserResponseModel> showAllUsers() {
+        List<UserDto> allUsers = userService.getAllUsers();
+        return userMapper.toUsersResponseModel(allUsers);
     }
 
     @GetMapping("/users/{id}")
-    public UsersResponseModel getUser(@NotNull @PathVariable int id) {
-        UsersDto usersDto = usersService.getUser(id);
-        return usersMapper.toResponseModel(usersDto);
+    public UserResponseModel getUser(@NotNull @PathVariable int id) {
+        UserDto userDto = userService.getUser(id);
+        return userMapper.toResponseModel(userDto);
     }
 
     @PostMapping("/users")
-    public UsersResponseModel addUser(@RequestBody UsersAddRequestModel model) {
-        UsersDto dto = usersService.addUser(usersMapper.toDto(model));
-        return usersMapper.toResponseModel(dto);
+    public UserResponseModel addUser(@RequestBody UserAddRequestModel model) {
+        UserDto dto = userService.addUser(userMapper.toDto(model));
+        return userMapper.toResponseModel(dto);
     }
 
     @DeleteMapping("/users/{id}")
     public String deleteUser(@NotNull @PathVariable int id) {
-        return usersService.deleteUser(id);
+        return userService.deleteUser(id);
     }
 
     @PostMapping("users/{id}")
-    public UsersResponseModel updateUser(@NotNull @PathVariable int id,
-                                         @RequestBody UsersUpdateRequestModel model) {
-        UsersDto dto = usersService.updateUser(usersMapper.toDto(model), id);
-        return usersMapper.toResponseModel(dto);
+    public UserResponseModel updateUser(@NotNull @PathVariable int id,
+                                        @RequestBody UserUpdateRequestModel model) {
+        UserDto dto = userService.updateUser(userMapper.toDto(model), id);
+        return userMapper.toResponseModel(dto);
     }
 
     @PostMapping("/users/addArrayUsers")
-    public List <UsersResponseModel> addListUsers(@RequestBody List <UsersAddRequestModel> listModelsRequest) {
-        List<UsersDto> listUserDto = new ArrayList<>();
+    public List <UserResponseModel> addListUsers(@RequestBody List <UserAddRequestModel> listModelsRequest) {
+        List<UserDto> listUserDto = new ArrayList<>();
         for (int i = 0; i < listModelsRequest.size(); i++) {
-            UsersDto dto = usersMapper.toDto(listModelsRequest.get(i));
-            dto = usersService.addUser(dto);
+            UserDto dto = userMapper.toDto(listModelsRequest.get(i));
+            dto = userService.addUser(dto);
             listUserDto.add(dto);
         }
-        return usersMapper.toUsersResponseModel(listUserDto);
+        return userMapper.toUsersResponseModel(listUserDto);
     }
 }
 

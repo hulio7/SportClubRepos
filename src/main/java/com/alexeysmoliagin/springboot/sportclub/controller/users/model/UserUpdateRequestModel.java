@@ -1,19 +1,13 @@
 package com.alexeysmoliagin.springboot.sportclub.controller.users.model;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class UsersAddRequestModel {
-    @NotBlank
+public class UserUpdateRequestModel {
     private String name;
-    @NotBlank
     private String surname;
     private String gender;
     private int age;
-    @NotBlank
     private String phone;
-    @NotBlank
     private String telegramLogin;
-
 }

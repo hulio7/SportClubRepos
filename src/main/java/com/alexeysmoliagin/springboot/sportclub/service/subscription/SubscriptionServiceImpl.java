@@ -6,9 +6,10 @@ import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.Subscription
 import com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription.UserSubscriptionMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.user.UserRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.user.entity.User;
+import com.alexeysmoliagin.springboot.sportclub.repository.usersubscription.UserSubscription;
+import com.alexeysmoliagin.springboot.sportclub.repository.usersubscription.UserSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.event.BillingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionMapper subscriptionMapper;
-    private final UsersRepository usersRepository;
-    private final UsersSubscriptionRepository usersSubscriptionRepository;
+    private final UserRepository userRepository;
+    private final UserSubscriptionRepository userSubscriptionRepository;
     private final UserSubscriptionMapper userSubscriptionMapper;
     private final BillingService billingService;
     private final BillingMapper billingMapper;
@@ -38,15 +39,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Transactional
     @Override
     public SubscriptionDto buySubscription(BuySubscriptionDto dto) {
-        var user = usersRepository.findById(dto.getUserId())
-                .orElseThrow(()-> entityNotFoundException(USER_NOT_EXIST, dto.getUserId()));
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> entityNotFoundException(USER_NOT_EXIST, dto.getUserId()));
         var subscription = subscriptionMapper.toSubscription(dto);
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
         subscription.setStartOfAction(tomorrow);
         subscription.setEndOfAction(tomorrow.plusYears(1));
         Subscription saved = subscriptionRepository.save(subscription);
         UserSubscription userSubscription = userSubscriptionMapper.toEntity(subscription, dto.getUserId());
-        usersSubscriptionRepository.save(userSubscription);
+        userSubscriptionRepository.save(userSubscription);
         BillingEventDto billingEventDto = billingMapper.toBillingEventDto(user, subscription.getPrice());
         billingService.sendForCalculateTax(billingEventDto);
         return subscriptionMapper.toDto(saved);
@@ -63,7 +64,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public String deleteSubscription(int id) {
         if (subscriptionRepository.existsById(id)) {
-            usersSubscriptionRepository.deleteBySubscriptionId(id);
+            userSubscriptionRepository.deleteBySubscriptionId(id);
             subscriptionRepository.deleteById(id);
             return getMessage(SUBSCRIPTION_DELETE, id);
         }
@@ -81,7 +82,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         newSubscription.setPrice(dto.getPrice());
         Subscription saved = subscriptionRepository.save(newSubscription);
         UserSubscription entity = userSubscriptionMapper.toEntity(saved, dto.getUserId());
-        usersSubscriptionRepository.save(entity);
+        userSubscriptionRepository.save(entity);
         return subscriptionMapper.toDto(saved);
     }
 
