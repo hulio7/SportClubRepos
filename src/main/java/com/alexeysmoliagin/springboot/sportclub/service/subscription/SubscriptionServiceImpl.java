@@ -6,7 +6,7 @@ import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.Subscription
 import com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription.UserSubscriptionMapper;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.event.BillingService;

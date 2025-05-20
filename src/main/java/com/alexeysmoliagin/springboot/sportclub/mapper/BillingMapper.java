@@ -1,7 +1,7 @@
 package com.alexeysmoliagin.springboot.sportclub.mapper;
 
 import com.alexeysmoliagin.springboot.sportclub.infrastructure.output.event.BillingEventDto;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.entity.Users;
+import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
