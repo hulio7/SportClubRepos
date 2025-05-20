@@ -28,8 +28,6 @@ import static org.mockito.Mockito.*;
 class UsersServiceTest {
     @Mock
     private UsersRepository usersRepository;
-    @Mock
-    private UsersSubscriptionRepository usersSubscriptionRepository;
     @Spy
     private UsersMapperImpl usersMapper;
     @InjectMocks
