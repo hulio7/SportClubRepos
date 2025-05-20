@@ -1,10 +1,13 @@
 package com.alexeysmoliagin.springboot.sportclub.service.users;
 
 import com.alexeysmoliagin.springboot.sportclub.mapper.users.UsersMapper;
-import com.alexeysmoliagin.springboot.sportclub.repository.users.UsersRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.users.dto.UsersDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +28,13 @@ public class UsersServiceImpl implements UsersService {
     private final UsersMapper usersMapper;
     private final UsersSubscriptionRepository usersSubscriptionRepository;
 
-
     @Override
     public List<UsersDto> getAllUsers() {
         var allUsers = usersRepository.findAll();
         return usersMapper.toUsersDtoList(allUsers);
     }
 
+    @Cacheable(value = "USERS", key = "#id")
     @Override
     public UsersDto getUser(int id) {
         var user = usersRepository.findById(id)
@@ -39,6 +42,7 @@ public class UsersServiceImpl implements UsersService {
         return usersMapper.toDto(user);
     }
 
+    @CachePut(value = "USERS", key = "#result.id")
     @Override
     @Transactional
     public UsersDto addUser(UsersDto dto) {
@@ -47,7 +51,7 @@ public class UsersServiceImpl implements UsersService {
         usersRepository.save(user);
         return usersMapper.toDto(user);
     }
-
+    @CachePut(value = "USERS", key = "#result.id")
     @Override
     @Transactional
     public UsersDto updateUser(UsersDto dto, int id) {
@@ -57,6 +61,7 @@ public class UsersServiceImpl implements UsersService {
         return usersMapper.toDto(updatedUser);
     }
 
+    @CacheEvict(value = "USERS", key = "#id")
     @Override
     @Transactional
     public String deleteUser(int id) {
