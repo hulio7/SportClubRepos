@@ -7,11 +7,13 @@ import com.alexeysmoliagin.springboot.sportclub.mapper.usersubscription.UserSubs
 import com.alexeysmoliagin.springboot.sportclub.messageSource.MessageSourceFactory;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.SubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.repository.subscription.entity.Subscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.Users.UsersRepository;
-import com.alexeysmoliagin.springboot.sportclub.repository.Users.entity.Users;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UserSubscription;
-import com.alexeysmoliagin.springboot.sportclub.repository.userssubscription.UsersSubscriptionRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.user.UserRepository;
+import com.alexeysmoliagin.springboot.sportclub.repository.user.entity.User;
+import com.alexeysmoliagin.springboot.sportclub.repository.userSubscription.UserSubscription;
+import com.alexeysmoliagin.springboot.sportclub.repository.userSubscription.UserSubscriptionRepository;
 import com.alexeysmoliagin.springboot.sportclub.service.event.BillingService;
+import com.alexeysmoliagin.springboot.sportclub.service.subscription.dto.SubscriptionDtoBuyRequest;
+import com.alexeysmoliagin.springboot.sportclub.service.subscription.dto.SubscriptionDtoExtensionRequest;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,9 +43,9 @@ class SubscriptionServiceTest {
     @Mock
     private SubscriptionRepository subscriptionRepository;
     @Mock
-    private UsersSubscriptionRepository usersSubscriptionRepository;
+    private UserSubscriptionRepository usersSubscriptionRepository;
     @Mock
-    private UsersRepository usersRepository;
+    private UserRepository usersRepository;
     @Spy
     private SubscriptionMapperImpl subscriptionMapper;
     @Spy
@@ -66,20 +68,20 @@ class SubscriptionServiceTest {
     @Test
     @DisplayName("buySubscription: all ok when subscription exists")
     void buySubscription() {
-        BuySubscriptionDto buySubscriptionDto = Instancio.create(BuySubscriptionDto.class);
+        var buySubscriptionDto = Instancio.create(SubscriptionDtoBuyRequest.class);
         Subscription subscription = new Subscription();
         subscription.setPrice(buySubscriptionDto.getPrice());
         subscription.setType(buySubscriptionDto.getType());
         subscription.setName(buySubscriptionDto.getName());
-        when(usersRepository.findById(buySubscriptionDto.getUserId())).thenReturn(Optional.of(new Users()));
+        when(usersRepository.findById(buySubscriptionDto.getUserId())).thenReturn(Optional.of(new User()));
         when(subscriptionMapper.toSubscription(buySubscriptionDto)).thenCallRealMethod();
         when(subscriptionRepository.save(any())).thenReturn(subscription);
         when(userSubscriptionMapper.toEntity(any(), anyInt())).thenCallRealMethod();
         when(usersSubscriptionRepository.save(any())).thenReturn(any());
-        when(subscriptionMapper.toDto(subscription)).thenCallRealMethod();
+        when(subscriptionMapper.toDtoBuy(subscription)).thenCallRealMethod();
         when(billingMapper.toBillingEventDto(any(), anyInt())).thenCallRealMethod();
         doNothing().when(billingService).sendForCalculateTax(any());
-        SubscriptionDto actual = subscriptionService.buySubscription(buySubscriptionDto);
+        var actual = subscriptionService.buySubscription(buySubscriptionDto);
         assertEquals(buySubscriptionDto.getName(), actual.getName());
         assertEquals(buySubscriptionDto.getType(), actual.getType());
         assertEquals(buySubscriptionDto.getPrice(), actual.getPrice());
@@ -88,7 +90,7 @@ class SubscriptionServiceTest {
     @Test
     @DisplayName("buySubscription: throw EntityNotFoundException when users not exists")
     void buySubscriptionCase2() {
-        BuySubscriptionDto subscriptionDto = Instancio.create(BuySubscriptionDto.class);
+        var subscriptionDto = Instancio.create(SubscriptionDtoBuyRequest.class);
         when(usersRepository.findById(anyInt())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, ()->
         subscriptionService.buySubscription(subscriptionDto));
@@ -99,7 +101,7 @@ class SubscriptionServiceTest {
     void getSubscription() {
         Subscription subscription = Instancio.create(Subscription.class);
         when(subscriptionRepository.findById(subscription.getId())).thenReturn(Optional.of(subscription));
-        SubscriptionDto actual = subscriptionService.getSubscription(subscription.getId());
+        var actual = subscriptionService.getSubscription(subscription.getId());
         assertEquals(subscription.getType(), actual.getType());
         assertEquals(subscription.getName(), actual.getName());
         assertEquals(subscription.getPrice(), actual.getPrice());
@@ -135,14 +137,15 @@ class SubscriptionServiceTest {
     @DisplayName("extensionSubscription: all ok when subscription exists")
     void extensionSubscription() {
         Subscription subscription = Instancio.create(Subscription.class);
-        SubscriptionExtensionDto subscriptionExtensionDto = Instancio.create(SubscriptionExtensionDto.class);
-        when(subscriptionRepository.findById(subscriptionExtensionDto.getSubscriptionId())).thenReturn(Optional.of(subscription));
+        User user = Instancio.create(User.class);
+        SubscriptionDtoExtensionRequest dto = Instancio.create(SubscriptionDtoExtensionRequest.class);
+        when(subscriptionRepository.findById(dto.getSubscriptionId())).thenReturn(Optional.of(subscription));
+        when(usersRepository.findById(dto.getUserId())).thenReturn(Optional.of(user));
         when(subscriptionMapper.toSubscription(subscription)).thenCallRealMethod();
         when(subscriptionRepository.save(any())).thenReturn(subscription);
         when(userSubscriptionMapper.toEntity(any(), anyInt())).thenCallRealMethod();
         when(usersSubscriptionRepository.save(any())).thenReturn(new UserSubscription());
-        when(subscriptionMapper.toDto(any(Subscription.class))).thenCallRealMethod();
-        SubscriptionDto actual = subscriptionService.extensionSubscription(subscriptionExtensionDto);
+        var actual = subscriptionService.extensionSubscription(dto);
         assertEquals(subscription.getType(), actual.getType());
         assertEquals(subscription.getName(), actual.getName());
         assertEquals(subscription.getPrice(), actual.getPrice());
@@ -151,7 +154,7 @@ class SubscriptionServiceTest {
     @Test
     @DisplayName("extensionSubscription: throw EntityNotFoundException when subscription not exists")
     void extensionSubscriptionCase2() {
-        SubscriptionExtensionDto subscriptionExtensionDto = Instancio.create(SubscriptionExtensionDto.class);
+        SubscriptionDtoExtensionRequest subscriptionExtensionDto = Instancio.create(SubscriptionDtoExtensionRequest.class);
         when(subscriptionRepository.findById(anyInt())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, ()->subscriptionService.extensionSubscription(subscriptionExtensionDto));
     }
