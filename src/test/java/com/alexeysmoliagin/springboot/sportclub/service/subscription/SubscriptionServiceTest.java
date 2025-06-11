@@ -1,6 +1,5 @@
 package com.alexeysmoliagin.springboot.sportclub.service.subscription;
 
-import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionModelBuyRequest;
 import com.alexeysmoliagin.springboot.sportclub.exceptions.EntityNotFoundException;
 import com.alexeysmoliagin.springboot.sportclub.mapper.BillingMapperImpl;
 import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.SubscriptionMapperImpl;

@@ -6,7 +6,6 @@ import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.Su
 import com.alexeysmoliagin.springboot.sportclub.controller.subscription.model.SubscriptionModelResponse;
 import com.alexeysmoliagin.springboot.sportclub.mapper.subscription.SubscriptionMapper;
 import com.alexeysmoliagin.springboot.sportclub.service.subscription.SubscriptionService;
-import com.alexeysmoliagin.springboot.sportclub.service.subscription.dto.SubscriptionDtoExtensionRequest;
 import com.alexeysmoliagin.springboot.sportclub.service.subscription.dto.SubscriptionDtoExtensionResponse;
 import com.alexeysmoliagin.springboot.sportclub.service.subscription.dto.SubscriptionDtoGetResponse;
 import jakarta.validation.constraints.NotNull;

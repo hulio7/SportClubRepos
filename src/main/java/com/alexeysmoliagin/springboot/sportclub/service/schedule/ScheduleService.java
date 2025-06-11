@@ -1,6 +1,5 @@
 package com.alexeysmoliagin.springboot.sportclub.service.schedule;
 
-import com.alexeysmoliagin.springboot.sportclub.service.schedule.dto.ScheduleDto;
 import com.alexeysmoliagin.springboot.sportclub.service.schedule.dto.ScheduleDtoAddRequest;
 import com.alexeysmoliagin.springboot.sportclub.service.schedule.dto.ScheduleDtoAddResponse;
 import com.alexeysmoliagin.springboot.sportclub.service.schedule.dto.ScheduleDtoGetResponse;
