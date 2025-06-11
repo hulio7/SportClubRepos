@@ -17,7 +17,7 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorInfo> handleException(BadRequestException exception){
+    public ResponseEntity<ErrorInfo> handlerException(BadRequestException exception){
         ErrorInfo data = new ErrorInfo();
         data.setCode(HttpStatus.BAD_REQUEST.value());
         data.setInfo(exception.getMessage());
@@ -25,7 +25,7 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorInfo> handleException(BusinessLogicException exception) {
+    public ResponseEntity<ErrorInfo> handlerException(BusinessLogicException exception) {
         ErrorInfo data = new ErrorInfo();
         data.setCode(444);
         data.setInfo(exception.getMessage());

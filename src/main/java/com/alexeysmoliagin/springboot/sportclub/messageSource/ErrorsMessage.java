@@ -17,6 +17,20 @@ public class ErrorsMessage {
         public static final String SUBSCRIPTION_DELETE = "subscription.delete";
 
     }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ActivityMessage {
+        public static final String ACTIVITY_NOT_EXIST = "notSuchEntityException.activity.notExist";
+        public static final String ACTIVITY_DELETE = "activity.delete";
+
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class ScheduleMessage {
+        public static final String SCHEDULE_NOT_EXIST = "notSuchEntityException.schedule.notExist";
+        public static final String SCHEDULE_DELETE = "schedule.delete";
+
+    }
 }
 
 
